@@ -9,6 +9,8 @@ import {
   Box,
 } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { CustomDataExport } from './components/CustomDataExport';
 
 const theme = createTheme({
   typography: {
@@ -21,6 +23,14 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           color: '#1a1a1a',
+        },
+      },
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#ffffff',
+          minHeight: '100vh',
         },
       },
     },
@@ -456,37 +466,75 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Box sx={{ p: 3 }}>
-          <h1 style={{ color: '#1a1a1a', marginBottom: '20px' }}>Event Data Export</h1>
-          <button 
-            onClick={exportToExcel}
-            style={{
-              backgroundColor: '#1976d2',
-              color: 'white',
-              padding: '10px 20px',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              marginBottom: '20px'
-            }}
-          >
-            Export to Excel
-          </button>
-          
-          <h2 style={{ color: '#1a1a1a', marginBottom: '10px' }}>Preview Data:</h2>
-          <Box component="pre" sx={{ 
-            bgcolor: 'grey.100', 
-            p: 2, 
-            borderRadius: 1,
-            overflow: 'auto',
-            maxHeight: '400px',
-            color: '#1a1a1a',
+      <Box sx={{ backgroundColor: '#f5f5f5', minHeight: '100vh', width: '100%' }}>
+        <BrowserRouter>
+          <Container maxWidth={false} sx={{ 
+            minHeight: '100vh',
+            backgroundColor: '#ffffff',
+            p: { xs: 1, sm: 2, md: 3 }, // Responsive padding
+            boxShadow: 1 
           }}>
-            {JSON.stringify(data, null, 2)}
-          </Box>
-        </Box>
-      </Container>
+            <Box sx={{ 
+              display: 'flex', 
+              gap: 2, 
+              mb: 3 
+            }}>
+              <Link to="/" style={{ 
+                textDecoration: 'none',
+                padding: '8px 16px',
+                backgroundColor: '#1976d2',
+                color: 'white',
+                borderRadius: '4px'
+              }}>
+                Sample Data Export
+              </Link>
+              <Link to="/custom" style={{ 
+                textDecoration: 'none',
+                padding: '8px 16px',
+                backgroundColor: '#1976d2',
+                color: 'white',
+                borderRadius: '4px'
+              }}>
+                Custom Data Export
+              </Link>
+            </Box>
+            <Routes>
+              <Route path="/" element={
+                <Box sx={{ p: 3 }}>
+                  <h1 style={{ color: '#1a1a1a', marginBottom: '20px' }}>Event Data Export</h1>
+                  <button 
+                    onClick={exportToExcel}
+                    style={{
+                      backgroundColor: '#1976d2',
+                      color: 'white',
+                      padding: '10px 20px',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      marginBottom: '20px'
+                    }}
+                  >
+                    Export to Excel
+                  </button>
+                  
+                  <h2 style={{ color: '#1a1a1a', marginBottom: '10px' }}>Preview Data:</h2>
+                  <Box component="pre" sx={{ 
+                    bgcolor: 'grey.100', 
+                    p: 2, 
+                    borderRadius: 1,
+                    overflow: 'auto',
+                    maxHeight: '400px',
+                    color: '#1a1a1a',
+                  }}>
+                    {JSON.stringify(data, null, 2)}
+                  </Box>
+                </Box>
+              } />
+              <Route path="/custom" element={<CustomDataExport />} />
+            </Routes>
+          </Container>
+        </BrowserRouter>
+      </Box>
     </ThemeProvider>
   );
 };
